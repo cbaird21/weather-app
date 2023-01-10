@@ -150,7 +150,6 @@ function fetchCityWeatherFromHistory() {
       $("#tempText").text("Temp: " + data.main.temp + "°F");
       $("#windText").text("Wind:  " + data.wind.speed + "MPH");
       $("#humidityText").text("Humidity: " + data.main.humidity + "%");
-      var currentCity = data.name;
       day.appendChild(createImg);
     })
 }
@@ -173,16 +172,80 @@ function fetchCityCordsFromHistroy(input) {
       fetchCityForecast();
     });
 }
+// fetch for 5 days
+function fetchCityForecast() {
+  forestArr = [];
+  fetch(
+    getForcast +
+    "lat=" +
+    lat +
+    "&lon=" +
+    lon +
+    "&appid=" +
+    apiKey2 +
+    "&units=imperial"
+  )
+    .then(function (response) {
+      return response.json();
+    })
+    .then(function (data) {
+      forecastArr.push(data.list[4]);
+      forecastArr.push(data.list[12]);
+      forecastArr.push(data.list[20]);
+      forecastArr.push(data.list[29]);
+      forecastArr.push(data.list[36]);
+      appendForecastData();
+    })
+}
+// appendind the 5 day data to cards
+function appendForecastData() {
+  for (let i = 0; i < forecastArr.length; i++) {
+    var dayName = forecastArr[i].dt_txt;
+    var icon = forecastArr[i].weather[0].icon;
+    var temp = forecastArr[i].main.temp;
+    var speed = forecastArr[i].wind.speed;
+    var humidity = forecastArr[i].main.humidity;
+    var day = document.getElementById("Day-" + [i]);
+    var createImg = document.createElement("img");
+    var createli = document.createElement("li");
+    var createli2 = document.createElement("li");
+    var createli3 = document.createElement("li");
+    createImg.setAttribute(
+      "src",
+      "https://openweathermap.org/img/wn/" + icon + ".png"
+    );
+    createli.textContent = "Temp: " + temp + "°F";
+    createli2.textContent = "Wind: " + speed + " MPH";
+    createli3.textContent = "Humidity : " + humidity + " %";
+    day.textContent = dayName;
+    day.appendChild(createImg);
+    day.appendChild(createli);
+    day.appendChild(createli2);
+    day.appendChild(createli3);
+  }
+}
+// retrives and appends local storage
+function getLocalStorage() {
+  if (JSON.parse(localStorage.getItem("history")) !== null) {
+    history = history.concat(JSON.parse(localStorage.getItem("history")));
+  }
+  for (let i = 0; i < history.length; i++) {
+    var newButton = document.createElement("button");
+
+    newButton.type = "submit";
+    newButton.setAttribute("class", history[i]);
+    newButton.className = "my-2 col-12 btn btn-primary " + history[i];
+    newButton.id = "historyButton";
+    newButton.textContent = history[i];
+    document.getElementById("history").appendChild(newButton);
+  }
+}
+// run to storage function on page load
+getLocalStorage();
 // Event listners
 // listener for the search button
-userForm.addEventListener("click", function (event) {
-  event.preventDefault();
-  handleFormSubmit();
-});
+userForm.addEventListener("submit", handleFormSubmit);
 
-// local storage
-// localStorage.getItem("cities");
-// localStorage.setItem("cities");
-// create an empty array in global storage
-// push that value(name of the city) to that array
-// ["austin", "denver" ,]
+// handle previous search buttons
+$(document).on("click", "#historyButton", handleHistorySubmit);
+
