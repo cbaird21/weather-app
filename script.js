@@ -128,8 +128,51 @@ function handleHistorySubmit(e) {
 }
 
 // this will get the weather from the history button
+function fetchCityWeatherFromHistory() {
+  fectch(getWeather +
+    "lat=" +
+    lat +
+    "&lon=" +
+    lon +
+    "&appid=" +
+    apiKey2 +
+    "&units=imperial")
+    .then(function (response) {
+      return response.json();
+    })
+    .then(function (data) {
+      let day = document.getElementById("cityName");
+      let thisIcon = data.weather[0].icon;
+      var createImg = document.createElement("img");
+      createImg.setAttribute("src",
+        "https://openweathermap.org/img/wn/" + thisIcon + ".png");
+      $("#cityName").text(data.name + " (" + date + ") ");
+      $("#tempText").text("Temp: " + data.main.temp + "°F");
+      $("#windText").text("Wind:  " + data.wind.speed + "MPH");
+      $("#humidityText").text("Humidity: " + data.main.humidity + "%");
+      var currentCity = data.name;
+      day.appendChild(createImg);
+    })
+}
+function fetchCityCordsFromHistroy(input) {
+  console.log(input);
+  var getCityCords = "https://api.openweathermap.org/geo/1.0/direct?q=" +
+    input +
+    "&appid=" +
+    apikey;
+  fetch(getCityCords)
+    .then(function (response) {
+      return response.json();
+    })
+    .then(function (data) {
+      console.log(data);
+      lat = data[0].lat;
+      lon = data[0].lon;
 
-
+      fetchCityWeatherFromHistory();
+      fetchCityForecast();
+    });
+}
 // Event listners
 // listener for the search button
 userForm.addEventListener("click", function (event) {
