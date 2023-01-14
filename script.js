@@ -5,7 +5,7 @@ var lat = "";
 var lon = "";
 var weatherApi = "https://api.openweathermap.org/data/2.5/forecast?";
 var apiKey = "5ff881f968b0b9c4fb63f514f648bb13";
-var apiKey2= "6f8cebf1a17807d63882af2a6b0a578d";
+var apiKey2 = "6f8cebf1a17807d63882af2a6b0a578d";
 var cityToCords =
   " http://api.openweathermap.org/geo/1.0/direct?q={city name}&appid={API key}";
 var dayForecast = document.getElementById("current-forecast");
@@ -32,7 +32,7 @@ function handleFormSubmit(e) {
   var input = userInput.value;
   console.log(input);
   //   make an api call with that search term and confirm data is sent back
-  fetchCordinates(input);
+  fetchCityCordinates(input);
 }
 // function is responsible for getting the lat and lon for the city passed
 function fetchCityCordinates(city) {
