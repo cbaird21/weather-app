@@ -6,8 +6,8 @@ var cityToCords =
 var weatherApi = "https://api.openweathermap.org/data/2.5/forecast?";
 var lat = "";
 var lon = "";
-var apikey = "9a971c3220d79475f9be536dd4515f62";
-var apiKey2 = "f768e14492ff74a6238ecb011d8ddefc";
+var apikey = "5ff881f968b0b9c4fb63f514f648bb13";
+var apiKey2 = "6f8cebf1a17807d63882af2a6b0a578d";
 var inputLatAndLong = "lat=" + lat + "&lon=" + lon + "&appid=" + apikey;
 var getWeather = "https://api.openweathermap.org/data/2.5/weather?";
 
