@@ -1,45 +1,42 @@
-// Variable declarations
+//VARIABLES
 var userInput = document.getElementById("userInput");
 var userForm = document.getElementById("formSubmit");
-var lat = "";
-var lon = "";
-var weatherApi = "https://api.openweathermap.org/data/2.5/forecast?";
-var apiKey = "5ff881f968b0b9c4fb63f514f648bb13";
-var apiKey2 = "6f8cebf1a17807d63882af2a6b0a578d";
 var cityToCords =
   " http://api.openweathermap.org/geo/1.0/direct?q={city name}&appid={API key}";
-var dayForecast = document.getElementById("current-forecast");
+var weatherApi = "https://api.openweathermap.org/data/2.5/forecast?";
+var lat = "";
+var lon = "";
+var apikey = "9a971c3220d79475f9be536dd4515f62";
+var apiKey2 = "f768e14492ff74a6238ecb011d8ddefc";
 var inputLatAndLong = "lat=" + lat + "&lon=" + lon + "&appid=" + apikey;
-var getDate = new Date();
 var getWeather = "https://api.openweathermap.org/data/2.5/weather?";
 
-var getForcast = "https://api.openweathermap.org/data/2.5/forecast?"
-var day = getDate.getDate();
-var month = getDate.getMonth();
-var year = getDate.getFullYear();
-var date = `${month} - ${day} - ${year}`;
+var getForcast = "https://api.openweathermap.org/data/2.5/forecast?";
+const getDate = new Date();
+
+let day = getDate.getDate();
+let month = getDate.getMonth() + 1;
+let year = getDate.getFullYear();
+let date = `${month}-${day}-${year}`;
 var createButtonCount = 0;
 var forecastArr = [];
 let storage = 0;
 let history = [];
 let mainIcon = $("#currentIcon");
-// functions
 
-// this function is responsible for form submission and capturing user input
+//FUNCTIONS
+
+//this functions is responsible for form submision by captureing user input
 function handleFormSubmit(e) {
-  // pulls input data value
   e.preventDefault();
   var input = userInput.value;
-  console.log(input);
-  //   make an api call with that search term and confirm data is sent back
-  fetchCityCordinates(input);
+  fetchCityCords(input);
+
+  //make an api call with that search term and confirm data is send back
 }
-// function is responsible for getting the lat and lon for the city passed
-function fetchCityCordinates(city) {
-  // this will make the call to get the cordinates for that city
-  console.log(city)
-  // var apiCall = rootEndpoint + "?q=" + city + "&appid=" + apiKey;
-  // input api call with pass key
+//functions is responsible for making api call with the user search term
+function fetchCityCords(city) {
+  console.log(city);
   var getCityCords =
     "https://api.openweathermap.org/geo/1.0/direct?q=" +
     city +
@@ -59,15 +56,9 @@ function fetchCityCordinates(city) {
       storage++;
     });
 }
-// responsible for the dymanic creation of the cards based on what the user wants
-// function renderCards() {
-// dom manipulation for cards
 
-// function responsible for making api with user searchterm
+//this functions will take the lat and long and get the weather
 function fetchCityWeather() {
-  // https://api.openweathermap.org/data/2.5/weather?lat= +lat +&lon=+ lon + &appid= + apiKey
-  // http://api.openweathermap.org/geo/1.0/direct?q=%7Bcity name},{state code},{country code}&limit={limit}&appid={API key}
-
   fetch(
     getWeather +
     "lat=" +
@@ -100,44 +91,44 @@ function fetchCityWeather() {
     });
 }
 
-//   render the temp as an h1 to the user
-
-// function renderDayForecast() {
-//   // place, date, temp, wind and humity
-// }
-
-// This will create a button upon being searched
+//this functions will make a new button
 function createCityButton(currentCity) {
-  var createButton = document.createElementNS("button");
+  var createButton = document.createElement("button");
   createButton.type = "submit";
   createButton.setAttribute("class", currentCity);
-  createButton.className = "my-2 col-12 btn btn-primary" + currentCity;
+  createButton.className = "my-2 col-12 btn btn-primary " + currentCity;
   createButton.id = "historyButton";
-  createButton.textContent = $("#historybutton");
+  createButton.textContent = currentCity;
+
+  document.getElementById("history").appendChild(createButton);
+  history.push(currentCity);
+  var storageName = currentCity;
+  var storageContent = $("#historyButton");
 
   localStorage.setItem("history", JSON.stringify(history));
-  console.log("." + currentCity);
+  console.log($("." + currentCity));
 
   createButtonCount++;
 }
-// This will handle the history input of content
+//this will handle the history input
 function handleHistorySubmit(e) {
   e.preventDefault();
   console.log(this.textContent);
   var input = this.textContent;
   fetchCityCordsFromHistory(input);
 }
-
-// this will get the weather from the history button
+//this will be responsible for getting weather from history button
 function fetchCityWeatherFromHistory() {
-  fectch(getWeather +
+  fetch(
+    getWeather +
     "lat=" +
     lat +
     "&lon=" +
     lon +
     "&appid=" +
     apiKey2 +
-    "&units=imperial")
+    "&units=imperial"
+  )
     .then(function (response) {
       return response.json();
     })
@@ -145,18 +136,24 @@ function fetchCityWeatherFromHistory() {
       let day = document.getElementById("cityName");
       let thisIcon = data.weather[0].icon;
       var createImg = document.createElement("img");
-      createImg.setAttribute("src",
-        "https://openweathermap.org/img/wn/" + thisIcon + ".png");
+      createImg.setAttribute(
+        "src",
+        "https://openweathermap.org/img/wn/" + thisIcon + ".png"
+      );
       $("#cityName").text(data.name + " (" + date + ") ");
       $("#tempText").text("Temp: " + data.main.temp + "°F");
       $("#windText").text("Wind:  " + data.wind.speed + "MPH");
       $("#humidityText").text("Humidity: " + data.main.humidity + "%");
+      var currentCity = data.name;
       day.appendChild(createImg);
-    })
+    });
 }
-function fetchCityCordsFromHistroy(input) {
+//this will be responsible from getting city cords from history button
+function fetchCityCordsFromHistory(input) {
   console.log(input);
-  var getCityCords = "https://api.openweathermap.org/geo/1.0/direct?q=" +
+
+  var getCityCords =
+    "https://api.openweathermap.org/geo/1.0/direct?q=" +
     input +
     "&appid=" +
     apikey;
@@ -173,9 +170,9 @@ function fetchCityCordsFromHistroy(input) {
       fetchCityForecast();
     });
 }
-// fetch for 5 days
+//this will featch for the next 5 days
 function fetchCityForecast() {
-  forestArr = [];
+  forecastArr = [];
   fetch(
     getForcast +
     "lat=" +
@@ -196,9 +193,9 @@ function fetchCityForecast() {
       forecastArr.push(data.list[29]);
       forecastArr.push(data.list[36]);
       appendForecastData();
-    })
+    });
 }
-// appendind the 5 day data to cards
+//this will append data to the 5 cards
 function appendForecastData() {
   for (let i = 0; i < forecastArr.length; i++) {
     var dayName = forecastArr[i].dt_txt;
@@ -225,11 +222,13 @@ function appendForecastData() {
     day.appendChild(createli3);
   }
 }
-// retrives and appends local storage
+//this retrives and appends localstorage
 function getLocalStorage() {
   if (JSON.parse(localStorage.getItem("history")) !== null) {
     history = history.concat(JSON.parse(localStorage.getItem("history")));
   }
+
+  console.log("functions is running");
   for (let i = 0; i < history.length; i++) {
     var newButton = document.createElement("button");
 
@@ -241,12 +240,10 @@ function getLocalStorage() {
     document.getElementById("history").appendChild(newButton);
   }
 }
-// run to storage function on page load
+//this runs the storage functions on page load
 getLocalStorage();
-// Event listners
-// listener for the search button
+//EVENT LISTENERS
+//this listeners for the search button
 userForm.addEventListener("submit", handleFormSubmit);
-
-// handle previous search buttons
+//this handles previous searches buttons(uses jquery bc vanilla wont allow click handlers on ids that havnt been created yet)
 $(document).on("click", "#historyButton", handleHistorySubmit);
-
