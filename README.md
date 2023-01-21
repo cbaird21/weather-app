@@ -26,7 +26,8 @@ THEN I am again presented with current and future conditions for that city
 
 ## Deployed Application
 
-https://cbaird21.github.io/weather-app/
+https://cbaird21.github.io/weather-app/  
+![Alt text](assets/images/screencapture-cbaird21-github-io-weather-app-2023-01-21-11_09_27.png)
 
 ## License
 
