@@ -1,5 +1,9 @@
 # Weather-App
 
+## Description
+
+This application will allow the user to search different cities and be generated a daily forecast with a 5 day forecast. It will also give the user the ability to click on previous searches.
+
 ## User Story
 
 As a traveler, I want to see the weather outlook for multiple cities so that I can plan a trip accordingly.
@@ -19,3 +23,11 @@ THEN I am again presented with current and future conditions for that city
 ## Mock-up
 
 ![Alt text](assets/images/06-server-side-apis-homework-demo.png)
+
+## Deployed Application
+
+https://cbaird21.github.io/weather-app/
+
+## License
+
+MIT
